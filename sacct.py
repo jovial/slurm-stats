@@ -1,6 +1,7 @@
 import datetime
 import json
 import subprocess
+import re
 
 from ClusterShell import NodeSet
 
@@ -67,6 +68,9 @@ for line in lines[1:]:
       nodeset = NodeSet.NodeSet(nodelist)
       nodes = list([x for x in nodeset])
       item["AllNodes"] = nodes
+      # Produce a prometheus style regex
+      nodes_regex = "|".join([re.escape(x) for x in nodes])
+      item["AllNodesRegex"] = nodes_regex
 
   # Exclude job steps
   jobid = item.get("JobID")
